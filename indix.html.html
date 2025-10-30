@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第15届全国世界语大会报名编号查询</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #2c3e50, #4a6491);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .logo {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 36px;
+            font-weight: bold;
+            opacity: 0.7;
+        }
+        
+        .search-section {
+            padding: 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .search-box {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px 0 0 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            border-color: #4a6491;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(74, 100, 145, 0.2);
+        }
+        
+        .search-box button {
+            background: #4a6491;
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        
+        .search-box button:hover {
+            background: #3a5479;
+        }
+        
+        .tips {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .result-section {
+            padding: 20px 30px;
+            min-height: 200px;
+        }
+        
+        .result-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .result-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .result-info {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .name-box, .number-box {
+            flex: 1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 0 10px;
+        }
+        
+        .name-box {
+            background: #e8f4fd;
+            border-left: 4px solid #3498db;
+        }
+        
+        .number-box {
+            background: #e8f8f0;
+            border-left: 4px solid #2ecc71;
+        }
+        
+        .name-box h4, .number-box h4 {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+        
+        .name-box p, .number-box p {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .error-message {
+            background: #ffeaea;
+            color: #e74c3c;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .participants-list {
+            margin-top: 30px;
+        }
+        
+        .participants-list h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .list-container {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            position: sticky;
+            top: 0;
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background-color: #f5f7fa;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 15px;
+            color: #7f8c8d;
+            font-size: 14px;
+            background: #f8f9fa;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+            }
+            
+            header h1 {
+                font-size: 20px;
+            }
+            
+            .search-section {
+                padding: 20px;
+            }
+            
+            .result-info {
+                flex-direction: column;
+            }
+            
+            .name-box, .number-box {
+                margin: 10px 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">15</div>
+            <h1>第15届全国世界语大会报名编号查询</h1>
+            <p>输入姓名查询您的参会编号</p>
+        </header>
+        
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="nameInput" placeholder="请输入您的姓名">
+                <button id="searchBtn">查询编号</button>
+            </div>
+            <div class="tips">
+                提示：系统支持模糊查询，例如输入"张三"或"zhang san"均可匹配
+            </div>
+        </div>
+        
+        <div class="result-section">
+            <div class="error-message" id="errorMessage">
+                未找到匹配的姓名，请检查输入是否正确
+            </div>
+            
+            <div class="result-card" id="resultCard">
+                <h3>查询结果</h3>
+                <div class="result-info">
+                    <div class="name-box">
+                        <h4>姓名</h4>
+                        <p id="resultName">-</p>
+                    </div>
+                    <div class="number-box">
+                        <h4>编号</h4>
+                        <p id="resultNumber">-</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="participants-list">
+                <h3>部分参会人员列表</h3>
+                <div class="list-container">
+                    <table id="participantsTable">
+                        <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>姓名</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- 表格内容将通过JavaScript动态生成 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            第15届全国世界语大会组委会 &copy; 2023
+        </footer>
+    </div>
+
+    <script>
+        // 从Excel数据构建姓名-编号映射
+        const nameNumberMap = {
+            "于涛": "No.001",
+            "刘大为": "No.002",
+            "杨建平": "No.003",
+            "王君校": "No.004",
+            "杨华杰": "No.005",
+            "陈文戈": "No.006",
+            "王汉平": "No.007",
+            "曹胜强": "No.008",
+            "严明": "No.009",
+            "弓晓峰": "No.010",
+            "周天豪": "No.011",
+            "丁志涛": "No.012",
+            "陈吉": "No.013",
+            "蒋利民": "No.014",
+            "李江龙": "No.015",
+            "魏玉斌": "No.016",
+            "赵云峰": "No.017",
+            "李建华": "No.018",
+            "王玉金": "No.019",
+            "刘伟杰": "No.020",
+            "王庆佳": "No.021",
+            "胡凤声": "No.022",
+            "陈育旺": "No.023",
+            "赵承华": "No.024",
+            "焦夕洋": "No.025",
+            "王迪生": "No.026",
+            "余细妹": "No.027",
+            "韩大强": "No.028",
+            "张常生": "No.029",
+            "刘明辉": "No.030",
+            "王宝山": "No.031",
+            "袁爱林": "No.032",
+            "斯琴巴特尔": "No.033",
+            "孙明孝": "No.034",
+            "安德顺": "No.035",
+            "左传长": "No.036",
+            "袁永明": "No.037",
+            "肖克": "No.038",
+            "张永乐": "No.039",
+            "王天义": "No.040",
+            "于建超": "No.041",
+            "祃璟琳": "No.042",
+            "赵建平": "No.043",
+            "王士荣": "No.044",
+            "南由礼": "No.045",
+            "郑彬": "No.046",
+            "张伟": "No.047",
+            "王贵英": "No.048",
+            "宋延德": "No.049",
+            "贾荣霞": "No.050",
+            "包霖": "No.051",
+            "吴成政": "No.052",
+            "王乐天": "No.053",
+            "朱恩": "No.054",
+            "夏清义": "No.055",
+            "刘保国": "No.056",
+            "曹雄林": "No.057",
+            "陈建生": "No.058",
+            "李广莉": "No.059",
+            "于长琳": "No.060",
+            "周志奇": "No.061",
+            "张建茂": "No.062",
+            "邢起双": "No.063",
+            "张雅婷": "No.064",
+            "陈坚荣": "No.065",
+            "宋萍": "No.066",
+            "盛祥桂": "No.067",
+            "代学冬": "No.068",
+            "曾凡跃": "No.069",
+            "赵德智": "No.070",
+            "蒋凤梅": "No.071",
+            "赛庸卓玛": "No.072",
+            "刘军": "No.073",
+            "胡国鹏": "No.074",
+            "陈宁宁": "No.075",
+            "文昌勇": "No.076",
+            "卢纪新": "No.077",
+            "布占保": "No.078",
+            "谢仁毅": "No.079",
+            "叶宝君": "No.080",
+            "尹延庆": "No.081",
+            "辇玮萍": "No.082",
+            "赵文琪": "No.083",
+            "姜艺涵": "No.084",
+            "苟馨月": "No.085",
+            "盛敏": "No.086",
+            "高淑媛": "No.087",
+            "拉斐尔": "No.088",
+            "裴海梦": "No.089",
+            "李江湖": "No.090",
+            "宋彩霞": "No.091",
+            "陈慰亲": "No.092",
+            "萧斐": "No.093",
+            "李忠民": "No.094",
+            "张卫青": "No.095",
+            "尚金铃": "No.096",
+            "曲元": "No.097",
+            "裘锡荣": "No.098",
+            "刘秀梅": "No.099",
+            "张博源": "No.100",
+            "叶佩学": "No.101",
+            "王宗华": "No.102",
+            "熊叶平": "No.103",
+            "尹玲萍": "No.104",
+            "吉峰": "No.105",
+            "王冠曦": "No.106",
+            "曹葆柱": "No.107",
+            "刘璟禛": "No.108",
+            "许志良": "No.109",
+            "彭争鸣": "No.110",
+            "李亚君": "No.111",
+            "刘家和": "No.112",
+            "刘汉林": "No.113",
+            "赵红霞": "No.114",
+            "沈程虹": "No.115",
+            "仝建辉": "No.116",
+            "王景蓉": "No.117",
+            "熊心影": "No.118",
+            "胡红军": "No.119",
+            "罗华云": "No.120",
+            "孙语睿": "No.121",
+            "宋景平": "No.122",
+            "郝未宁": "No.123",
+            "刘辉": "No.124",
+            "冯宇轩": "No.125",
+            "范骄阳": "No.126",
+            "王宝钊": "No.127",
+            "魏正尧": "No.128",
+            "汪萍": "No.129",
+            "诸道远": "No.130",
+            "李畅": "No.131",
+            "王婷": "No.132",
+            "王赟": "No.133",
+            "王楠": "No.134",
+            "张慧": "No.135",
+            "万云": "No.136",
+            "郭丽军": "No.137",
+            "刘喜珍": "No.138",
+            "李博川": "No.139",
+            "游贵生": "No.140",
+            "桂偲籍": "No.141",
+            "江中朝政": "No.142",
+            "舒可媛": "No.143",
+            "李男": "No.144",
+            "高雅萍": "No.145",
+            "孙丽君": "No.146",
+            "龙云霞": "No.147",
+            "宋振远": "No.148",
+            "戚键": "No.149",
+            "官俊磊": "No.150",
+            "王文胜": "No.151",
+            "陈平": "No.152",
+            "王慧": "No.153",
+            "袁红丽": "No.154",
+            "龚银碧": "No.155",
+            "毛晓励": "No.156",
+            "陈昌海": "No.157",
+            "曾生全": "No.158",
+            "杨武龙": "No.159",
+            "邢子豪": "No.160",
+            "方鹏锐": "No.161",
+            "姚雁晴": "No.162",
+            "刘志云": "No.163",
+            "万娜": "No.164",
+            "李仁辉": "No.165",
+            "王维东": "No.166",
+            "吕鸣凤": "No.167",
+            "苑亚东": "No.168",
+            "刘星": "No.169",
+            "樊子祥": "No.170",
+            "任姝畅": "No.171",
+            "康丽": "No.172",
+            "王珩": "No.173",
+            "王炳政": "No.174",
+            "钱其波": "No.175",
+            "朱永祥": "No.176",
+            "师宏生": "No.177",
+            "李文娟": "No.178",
+            "潘怡帆": "No.179",
+            "王瑞强": "No.180",
+            "马融": "No.181",
+            "Dario Mora": "No.182",
+            "宋子彬": "No.183",
+            "张兆庚": "No.184",
+            "ESCOBEDO MUNOZ ALEJANDRO": "No.185",
+            "闵小玲": "No.186",
+            "叶为民": "No.187",
+            "吴朝阳": "No.188",
+            "杨明杰": "No.189",
+            "季晓臻": "No.190",
+            "崔国庆": "No.191",
+            "冯大伟": "No.192",
+            "沈宁": "No.193",
+            "黎知允": "No.194",
+            "黄靖": "No.195",
+            "赵益禛": "No.196",
+            "黄开文": "No.197",
+            "王伟": "No.198",
+            "孔雷": "No.199",
+            "陈国庆": "No.200",
+            "莫养圣": "No.201",
+            "殷嘉新": "No.202",
+            "周英": "No.203",
+            "陈玉": "No.204",
+            "万树彬": "No.205",
+            "安云保": "No.206",
+            "温福来": "No.207",
+            "魏世泽": "No.208",
+            "郑建宏": "No.209",
+            "屈杰": "No.210",
+            "赵迎旭": "No.211",
+            "李立平": "No.212",
+            "孙晨源": "No.213",
+            "谢金彤": "No.214",
+            "阮婧瑄": "No.215",
+            "王浩": "No.216",
+            "谢文": "No.217",
+            "顾思骐": "No.218",
+            "植野友和": "No.219",
+            "高峰": "No.220",
+            "贾镕尔": "No.221",
+            "卢宏柱": "No.222",
+            "段秀兰": "No.223",
+            "单娜": "No.224",
+            "李杰燕": "No.225",
+            "侯佳": "No.226",
+            "穆泽平": "No.227",
+            "邢耀华": "No.228",
+            "张明则": "No.229",
+            "张剑": "No.230",
+            "赵旭荣": "No.231",
+            "刘文志": "No.232",
+            "赵维华": "No.233",
+            "赵文霞": "No.234",
+            "李连科": "No.235",
+            "小花": "No.236",
+            "韩玉萍": "No.237",
+            "高力平": "No.238",
+            "戴树体": "No.239",
+            "赵安源": "No.240",
+            "焦亚婷": "No.241",
+            "闫凤娇": "No.242",
+            "陈建成": "No.243",
+            "王婧烨": "No.244"
+        };
+
+        // 初始化表格
+        function initializeTable() {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+            
+            // 只显示前50条记录，避免表格过长
+            let count = 0;
+            for (const [name, number] of Object.entries(nameNumberMap)) {
+                if (count >= 50) break;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${number}</td><td>${name}</td>`;
+                tableBody.appendChild(row);
+                count++;
+            }
+        }
+
+        // 查找号码
+        function findNumber() {
+            const nameInput = document.getElementById('nameInput').value.trim();
+            const resultCard = document.getElementById('resultCard');
+            const errorMessage = document.getElementById('errorMessage');
+            const resultName = document.getElementById('resultName');
+            const resultNumber = document.getElementById('resultNumber');
+            
+            // 隐藏之前的结果
+            resultCard.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            if (!nameInput) {
+                errorMessage.textContent = "请输入姓名";
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            // 模糊匹配逻辑
+            let found = false;
+            let matchedName = '';
+            let matchedNumber = '';
+            
+            // 1. 精确匹配
+            if (nameNumberMap.hasOwnProperty(nameInput)) {
+                matchedName = nameInput;
+                matchedNumber = nameNumberMap[nameInput];
+                found = true;
+            } 
+            // 2. 大小写不敏感匹配
+            else {
+                for (const [name, number] of Object.entries(nameNumberMap)) {
+                    if (name.toLowerCase() === nameInput.toLowerCase()) {
+                        matchedName = name;
+                        matchedNumber = number;
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            
+            // 3. 包含匹配（如果前面没找到）
+            if (!found) {
+                for (const [name, number] of Object.entries(nameNumberMap)) {
+                    if (name.toLowerCase().includes(nameInput.toLowerCase())) {
+                        matchedName = name;
+                        matchedNumber = number;
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            
+            if (found) {
+                resultName.textContent = matchedName;
+                resultNumber.textContent = matchedNumber;
+                resultCard.style.display = 'block';
+            } else {
+                errorMessage.textContent = `未找到姓名 "${nameInput}" 对应的编号，请检查输入是否正确`;
+                errorMessage.style.display = 'block';
+            }
+        }
+
+        // 绑定事件
+        document.getElementById('searchBtn').addEventListener('click', findNumber);
+        
+        // 按回车键也可以查询
+        document.getElementById('nameInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                findNumber();
+            }
+        });
+
+        // 页面加载时初始化表格
+        window.onload = initializeTable;
+    </script>
+</body>
+</html>
