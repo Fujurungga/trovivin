@@ -170,46 +170,6 @@
             display: none;
         }
         
-        .participants-list {
-            margin-top: 30px;
-        }
-        
-        .participants-list h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .list-container {
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid #eee;
-            border-radius: 8px;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        
-        th {
-            background-color: #f8f9fa;
-            position: sticky;
-            top: 0;
-            font-weight: 600;
-        }
-        
-        tr:hover {
-            background-color: #f5f7fa;
-        }
-        
         footer {
             text-align: center;
             padding: 15px;
@@ -276,23 +236,6 @@
                         <h4>编号</h4>
                         <p id="resultNumber">-</p>
                     </div>
-                </div>
-            </div>
-            
-            <div class="participants-list">
-                <h3>部分参会人员列表</h3>
-                <div class="list-container">
-                    <table id="participantsTable">
-                        <thead>
-                            <tr>
-                                <th>编号</th>
-                                <th>姓名</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody">
-                            <!-- 表格内容将通过JavaScript动态生成 -->
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
@@ -551,23 +494,6 @@
             "王婧烨": "No.244"
         };
 
-        // 初始化表格
-        function initializeTable() {
-            const tableBody = document.getElementById('tableBody');
-            tableBody.innerHTML = '';
-            
-            // 只显示前50条记录，避免表格过长
-            let count = 0;
-            for (const [name, number] of Object.entries(nameNumberMap)) {
-                if (count >= 50) break;
-                
-                const row = document.createElement('tr');
-                row.innerHTML = `<td>${number}</td><td>${name}</td>`;
-                tableBody.appendChild(row);
-                count++;
-            }
-        }
-
         // 查找号码
         function findNumber() {
             const nameInput = document.getElementById('nameInput').value.trim();
@@ -640,9 +566,6 @@
                 findNumber();
             }
         });
-
-        // 页面加载时初始化表格
-        window.onload = initializeTable;
     </script>
 </body>
 </html>
